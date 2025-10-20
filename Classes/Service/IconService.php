@@ -27,8 +27,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class IconService
@@ -40,6 +41,8 @@ class IconService
 {
     private FrontendInterface $cache;
 
+    private Logger $logger;
+
     /** @var array<string, mixed> */
     private array $settings = [];
 
@@ -49,6 +52,7 @@ class IconService
     public function __construct(CacheManager $cacheManager)
     {
         $this->cache = $cacheManager->getCache('ot_icons');
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
         $this->setSettings();
     }
 
@@ -96,25 +100,25 @@ class IconService
         string $title = '',
         string $role = 'img'
     ): string {
-        // Normalize ariaHidden for cache reproducibility
+        // --- Normalize ariaHidden for reproducible cache keys ---
         $ariaKey = match ($ariaHidden) {
             true => 'T',
             false => 'F',
             null => 'N',
         };
 
-        // If no ID is provided, generate a random one for the aria-labelledby attribute
+        // --- Generate unique ID if not provided ---
         if ($id === '') {
             $id = 'icon-' . bin2hex(random_bytes(4));
         }
 
-        // --- Load mapping early so version can be included in cache key ---
-        $mapping = $this->loadMappingFile($this->settings['defaultIconSet']);
+        // --- Load mapping data (cached) for this icon set ---
+        $mapping = $this->getMappingData($this->settings['defaultIconSet']);
 
         $this->settings['defaultSubdirectory'] = $mapping['defaultSubdirectory'];
         $mappingVersion = (string)($mapping['version']);
 
-        // --- Build cache key (includes mapping version and icon set) ---
+        // --- Build cache key including mapping version for safety ---
         $cacheKey = md5(implode('|', [
             $this->settings['defaultIconSet'],
             $mappingVersion,
@@ -131,15 +135,15 @@ class IconService
             $role,
         ]));
 
-        // --- In-memory request cache ---
+        // --- In-memory cache (per request) ---
         if (isset($this->iconCache[$cacheKey])) {
             return $this->iconCache[$cacheKey];
         }
 
-        // --- Map internal identifier ---
-        $internalIdentifier = $this->mapIdentifier($identifier, $this->settings['defaultIconSet']);
+        // --- Map identifier via cached mapping data ---
+        $internalIdentifier = $mapping['map'][$identifier] ?? $identifier;
 
-        // --- Create the icon model and assign attributes ---
+        // --- Create Icon model ---
         $icon = new Icon($internalIdentifier, $this->settings);
 
         $icon->setSize($size);
@@ -151,20 +155,20 @@ class IconService
         $icon->setRole($role);
         $icon->setAriaHidden($ariaHidden);
 
-        // --- Determine effective icon style ---
+        // --- Resolve effective icon style ---
         if ($iconStyle === '') {
             $iconStyle = $this->settings['defaultIconStyle'] ?? '';
         }
         $icon->setIconStyle($iconStyle);
 
-        // --- Render based on return mode ---
+        // --- Render SVG based on return mode ---
         $svg = match ($returnAs) {
             'localstorage', 'sprite' => $icon->getSpriteCode(),
             'base64' => $icon->getBase64(),
             default => $icon->getInline(),
         };
 
-        // --- Store in the request cache and return ---
+        // --- Store result in request cache and return ---
         return $this->iconCache[$cacheKey] = $svg;
     }
 
@@ -177,46 +181,182 @@ class IconService
      */
     public function mapIdentifier(string $internalIdentifier, string $iconSet = 'FontAwesome_7'): string
     {
-        $cacheKey = 'iconMap_' . $iconSet;
-        $data = $this->cache->get($cacheKey);
-
-        if ($data === false) {
-            $data = $this->loadMappingFile($iconSet);
-            $this->cache->set($cacheKey, $data, [], 0);
-        }
-
-        $map = $data['map'] ?? [];
+        $data = $this->getMappingData($iconSet);
+        $map = $data['map'];
 
         return $map[$internalIdentifier] ?? $internalIdentifier;
     }
 
-    private function loadMappingFile(string $iconSet): array
+    /**
+     * Retrieve the complete mapping data for an icon set, including overrides.
+     *
+     * This method uses TYPO3 caching for performance and merges optional
+     * integrator-provided mappings from SiteConfiguration setting:
+     *   otIcons.customMappingDirectory
+     *
+     * @param string $iconSet The icon set identifier, e.g. "FontAwesome_7"
+     * @return array{
+     *      prefix: string,
+     *      version: string,
+     *      defaultSubdirectory: string,
+     *      map: array<string, string>
+     *  } Structured mapping configuration with keys:
+     *  - prefix (string)
+     *  - version (string|int|null)
+     *  - defaultSubdirectory (string)
+     *  - map (array)
+     */
+    private function getMappingData(string $iconSet): array
     {
-        $absolute = GeneralUtility::getFileAbsFileName('EXT:ot_icons/Configuration/Mappings/' . $iconSet . '.php');
-        if (!is_file($absolute)) {
-            throw new \RuntimeException('Mapping file not found: ' . $absolute);
+        $logger = $this->logger;
+
+        $cacheKey = 'iconMap_' . $iconSet;
+        $data = $this->cache->get($cacheKey);
+
+        // ✅ Return cached result if available
+        if ($data !== false) {
+            return $data;
         }
-        $data = require $absolute;
 
-        // Optional: project-specific override via Site Settings
-        $customMappingDir = $this->settings['customMappingDirectory'];
+        // 🗂 Load default mapping from the extension itself
+        $data = $this->loadMappingFile($iconSet);
 
-        if (!empty($customMappingDir)) {
-            $customPath = GeneralUtility::getFileAbsFileName(
-                rtrim($customMappingDir, '/') . '/' . $iconSet . '.php'
+        // ⚙️ Merge optional custom mapping if configured
+        $customMappingPath = $this->settings['customMappingDirectory'] ?? '';
+        if ($customMappingPath !== '') {
+            $customFile = GeneralUtility::getFileAbsFileName(
+                rtrim($customMappingPath, '/') . '/' . $iconSet . '.php'
             );
+            if (is_file($customFile)) {
+                try {
+                    /** @noinspection PhpIncludeInspection */
+                    $customData = include $customFile;
+                } catch (\Throwable $e) {
+                    $logger->warning(
+                        sprintf(
+                            'Error including custom mapping file for icon set "%s": %s (%s)',
+                            $iconSet,
+                            $e->getMessage(),
+                            $customFile
+                        )
+                    );
+                    $customData = null;
+                }
 
-            if (is_file($customPath)) {
-                $custom = require $customPath;
-                $data['map'] = array_merge($data['map'] ?? [], $custom['map'] ?? []);
+                if (!is_array($customData)) {
+                    $logger->warning(
+                        sprintf(
+                            'Invalid custom mapping file for icon set "%s": expected array, got %s',
+                            $iconSet,
+                            get_debug_type($customData)
+                        )
+                    );
+                } else {
+                    if (isset($customData['config'])) {
+                        $data['config'] = array_merge($data['config'], $customData['config']);
+                    }
+                    if (isset($customData['map'])) {
+                        $data['map'] = array_merge($data['map'], $customData['map']);
+                    }
+                    $logger->info(
+                        sprintf(
+                            'Custom mapping for icon set "%s" successfully loaded from %s',
+                            $iconSet,
+                            $customFile
+                        )
+                    );
+                }
+            } else {
+                $logger->warning(
+                    sprintf(
+                        'Custom mapping file not found for icon set "%s" at path "%s".',
+                        $iconSet,
+                        $customFile
+                    )
+                );
             }
         }
 
-        return [
+        // 🧠 Normalize structure for consistency
+        $normalized = [
             'prefix' => $data['config']['prefix'] ?? '',
-            'version' => $data['config']['version'] ?? null,
+            'version' => (string)($data['config']['version'] ?? ''),
             'defaultSubdirectory' => $data['config']['defaultSubdirectory'] ?? '',
-            'map' => $data['map'] ?? [],
+            'map' => $data['map'],
+        ];
+
+        // 💾 Store in TYPO3 cache for reuse
+        $this->cache->set($cacheKey, $normalized, [], 0);
+
+        return $normalized;
+    }
+
+
+    /**
+     * Load a mapping file for a given icon set.
+     *
+     * @param string $iconSet The name of the icon set (e.g. "FontAwesome_7")
+     * @return array{
+     *      config: array{prefix: string, version: string, defaultSubdirectory: string},
+     *      map: array<string,string>
+     *  } The normalized mapping configuration, or an empty structure on error
+     */
+
+    private function loadMappingFile(string $iconSet): array
+    {
+        $logger = $this->logger;
+
+        $defaultPath = 'EXT:ot_icons/Configuration/Mappings/' . $iconSet . '.php';
+        $absPath = GeneralUtility::getFileAbsFileName($defaultPath);
+
+        $empty = [
+            'config' => [
+                'prefix' => '',
+                'version' => '',
+                'defaultSubdirectory' => '',
+            ],
+            'map' => [],
+        ];
+
+        if (!is_file($absPath)) {
+            $logger->notice(sprintf('Mapping file not found for icon set "%s" at path "%s".', $iconSet, $absPath));
+            return $empty;
+        }
+
+        try {
+            /** @noinspection PhpIncludeInspection */
+            $data = include $absPath;
+        } catch (\Throwable $e) {
+            $logger->warning(
+                sprintf(
+                    'Error including mapping file for icon set "%s": %s (%s)',
+                    $iconSet,
+                    $e->getMessage(),
+                    $absPath
+                )
+            );
+            return $empty;
+        }
+
+        if (!is_array($data)) {
+            $logger->warning(
+                sprintf(
+                    'Invalid mapping file structure for icon set "%s": expected array, got %s',
+                    $iconSet,
+                    get_debug_type($data)
+                )
+            );
+            return $empty;
+        }
+
+        return [
+            'config' => [
+                'prefix' => (string)($data['config']['prefix'] ?? ''),
+                'version' => (string)($data['config']['version'] ?? ''),
+                'defaultSubdirectory' => (string)($data['config']['defaultSubdirectory'] ?? ''),
+            ],
+            'map' => is_array($data['map'] ?? null) ? $data['map'] : [],
         ];
     }
+
 }
