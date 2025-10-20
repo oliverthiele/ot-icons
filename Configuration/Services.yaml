@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  OliverThiele\OtIcons\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  OliverThiele\OtIcons\Service\IconService:
+    arguments:
+      $cacheManager: '@TYPO3\CMS\Core\Cache\CacheManager'
+    public: true
