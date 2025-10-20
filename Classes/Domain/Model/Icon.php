@@ -40,6 +40,10 @@ final class Icon
 
     private string $defaultSubdirectory = '';
 
+    /**
+     * @param string $identifier
+     * @param array<string, mixed> $settings
+     */
     public function __construct(
         private readonly string $identifier,
         private readonly array $settings
@@ -114,7 +118,7 @@ final class Icon
                 break;
             default:
                 $iconSizeString = 'ot-1x';
-                $iconSizeEm = '100%';
+                $iconSizeEm = '1em';
         }
 
         $this->setIconSizeString(' ' . $iconSizeString);
@@ -150,8 +154,9 @@ final class Icon
 
     public function getIdStringForSvg(): string
     {
-        if (!empty($this->getId())) {
-            return ' id="' . $this->id . '"';
+        $id = $this->getId();
+        if ($id !== '') {
+            return ' id="' . htmlspecialchars($id, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"';
         }
         return '';
     }
@@ -223,12 +228,12 @@ final class Icon
         return $this->ariaHidden;
     }
 
-    public function setAriaHidden(bool $ariaHidden): void
+    public function setAriaHidden(?bool $ariaHidden): void
     {
         $this->ariaHidden = $ariaHidden;
 
-        if ($ariaHidden === true && $this->role !== null) {
-            // role is automatically removed with aria-hidden
+        // If aria-hidden = true → no role
+        if ($ariaHidden === true) {
             $this->role = null;
         }
     }
@@ -334,10 +339,10 @@ final class Icon
             // optional browser tooltip (not announced by SR due to aria-hidden)
             if ($this->getTitle() !== '') {
                 $titleAndDescriptionTags = '<title>' . htmlspecialchars(
-                    $this->getTitle(),
-                    ENT_QUOTES | ENT_SUBSTITUTE,
-                    'UTF-8'
-                ) . '</title>';
+                        $this->getTitle(),
+                        ENT_QUOTES | ENT_SUBSTITUTE,
+                        'UTF-8'
+                    ) . '</title>';
             }
         } else {
             // accessible icon
@@ -348,29 +353,29 @@ final class Icon
             if ($labelText !== '') {
                 $titleId = $id . '-title';
                 $titleTag = '<title id="' . $titleId . '">' . htmlspecialchars(
-                    $labelText,
-                    ENT_QUOTES | ENT_SUBSTITUTE,
-                    'UTF-8'
-                ) . '</title>';
+                        $labelText,
+                        ENT_QUOTES | ENT_SUBSTITUTE,
+                        'UTF-8'
+                    ) . '</title>';
                 $ariaLabelledBy = ' aria-labelledby="' . $titleId . '"';
             } elseif ($this->getTitle() !== '') {
                 // fall back: if no aria-label was provided, use "title" as accessible name
                 $titleId = $id . '-title';
                 $titleTag = '<title id="' . $titleId . '">' . htmlspecialchars(
-                    (string)$this->getTitle(),
-                    ENT_QUOTES | ENT_SUBSTITUTE,
-                    'UTF-8'
-                ) . '</title>';
+                        (string)$this->getTitle(),
+                        ENT_QUOTES | ENT_SUBSTITUTE,
+                        'UTF-8'
+                    ) . '</title>';
                 $ariaLabelledBy = ' aria-labelledby="' . $titleId . '"';
             }
 
             if ($descText !== '') {
                 $descriptionId = $id . '-desc';
                 $descriptionTag = '<desc id="' . $descriptionId . '">' . htmlspecialchars(
-                    $descText,
-                    ENT_QUOTES | ENT_SUBSTITUTE,
-                    'UTF-8'
-                ) . '</desc>';
+                        $descText,
+                        ENT_QUOTES | ENT_SUBSTITUTE,
+                        'UTF-8'
+                    ) . '</desc>';
                 $ariaDescribedBy = ' aria-describedby="' . $descriptionId . '"';
             }
 
@@ -418,10 +423,11 @@ final class Icon
 
     public function getSpriteCode(): string
     {
-        return '<svg class="' . $this->getCssClass() . '"><use xlink:href="#' . $this->identifier . '"></use></svg>';
+        return '<svg class="' . $this->getCssClass(
+            ) . '"><use href="#' . $this->identifier . '" xlink:href="#' . $this->identifier . '"></use></svg>';
     }
 
-    private function loadIconFromDirectory(): ?string
+    private function loadIconFromDirectory(): string
     {
         $basePath = rtrim($this->settings['iconDirectory'], '/');
         $subDir = ltrim($this->getSubdirectory(), '/');
