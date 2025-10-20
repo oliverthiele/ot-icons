@@ -10,7 +10,7 @@ files to ensure maximum flexibility and maintainability.
 ### ✨ Key Features
 
 - **Mapping-based icon resolution** — update or change icon sets (e.g.,
-  FontAwesome → Material Icons) without modifying templates.
+  Font Awesome → Material Icons) without modifying templates.
 - **Fully accessible SVG output** — automatic handling of `role`, `aria-hidden`,
   `aria-label`, and `<title>` / `<desc>` tags.
 - **Multiple output modes** — inline SVG, sprite-based, or Base64 (future).
@@ -23,21 +23,33 @@ files to ensure maximum flexibility and maintainability.
 
 ## 🚀 Motivation
 
-TYPO3 projects often rely on hardcoded FontAwesome or Material icon classes.
-This makes upgrades painful when icon sets change or structures differ between
-versions.
+In many TYPO3 projects, icons are still integrated via **hard-coded FontAwesome or Material classes** like
+`<i class="fa fa-user"></i>`.
+This approach works — until an icon set changes its naming, folder structure, or style conventions.
+Upgrading FontAwesome from 5 → 6 → 7 often means **manually fixing dozens of templates**.
 
-**ot-icons** abstracts this away through *mapping files* and a clean API —
-you can update your entire icon set or switch vendors without touching a single
-Fluid template.
+**ot-icons** eliminates that problem.
 
-Additionally, the extension enforces **accessibility best practices**:
+By using *mapping files* and a clean Fluid API, you can **switch or upgrade entire icon sets**
+without touching a single Fluid template.
+Old identifiers are automatically translated to their new equivalents,
+keeping your templates clean and update-safe.
 
-- Icons hidden from assistive tech use `aria-hidden="true"` automatically.
-- Visible icons get a semantic `role="img"` and labeled `<title>` or
-  `aria-label` elements.
-- Optional `aria-description` tags support descriptive annotations for screen
-  readers.
+At the same time, **ot-icons** ensures that all SVGs are rendered
+with proper **accessibility semantics** — something most icon packs ignore:
+
+- Decorative icons are automatically hidden from assistive technologies (`aria-hidden="true"`).
+- Semantic icons receive the correct `role="img"` and accessible names via `<title>` or `aria-label`.
+- Optional `aria-description` tags allow extended screen-reader support.
+
+Unlike many existing icon packs for TYPO3, **ot-icons** focuses on:
+- **Frontend and Fluid integration**, not backend icons.
+- **Inline SVG rendering** instead of external webfonts.
+- **Extensibility** — custom mappings, per-site configuration, and planned sprite/localStorage support.
+
+The result:
+**Accessible, maintainable, and future-proof icon rendering for modern TYPO3 sites.**
+
 
 ---
 
