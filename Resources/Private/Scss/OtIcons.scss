@@ -1,0 +1,83 @@
+.ot-inline-icon {
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    vertical-align: -.125em;
+    font-size: var(--ot-icon-size, 1em); // enables `<svg class="ot-inline-icon" style="--ot-icon-size:3em">...</svg>`
+}
+
+.ot-1x {
+    font-size: 1em;
+}
+
+.ot-2x {
+    font-size: 2em;
+}
+
+.ot-3x {
+    font-size: 3em;
+}
+
+.ot-4x {
+    font-size: 4em;
+}
+
+.ot-5x {
+    font-size: 5em;
+}
+
+.ot-6x {
+    font-size: 6em;
+}
+
+.ot-7x {
+    font-size: 7em;
+}
+
+.ot-8x {
+    font-size: 8em;
+}
+
+.ot-9x {
+    font-size: 9em;
+}
+
+.ot-10x {
+    font-size: 10em;
+}
+
+.ot-2xs {
+    font-size: 0.625em;
+    line-height: 0.1em;
+    vertical-align: 0.225em;
+}
+
+.ot-xs {
+    font-size: 0.75em;
+    line-height: 0.08333em;
+    vertical-align: 0.125em;
+}
+
+.ot-sm {
+    font-size: 0.875em;
+    line-height: 0.07143em;
+    vertical-align: 0.05357em;
+}
+
+.ot-lg {
+    font-size: 1.25em;
+    line-height: 0.05em;
+    vertical-align: -0.075em;
+}
+
+.ot-xl {
+    font-size: 1.5em;
+    line-height: 0.04167em;
+    vertical-align: -0.125em;
+}
+
+.ot-2xl {
+    font-size: 2em;
+    line-height: 0.03125em;
+    vertical-align: -0.1875em;
+}

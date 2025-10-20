@@ -1,0 +1,25 @@
+categories:
+  otIcons:
+
+settings:
+  otIcons.defaultIconSet:
+    category: otIcons
+    type: string
+    default: 'FontAwesome_7'
+
+  otIcons.iconDirectory:
+    category: otIcons
+    type: string
+    default: 'EXT:ot_febuild/Resources/Public/Assets/Website/SVG/'
+
+  otIcons.defaultIconStyle:
+    category: otIcons
+    type: string
+    description: 'LLL:EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf:settings.otIcons.defaultIconStyle.description'
+    default: 'solid'
+
+  otIcons.customMappingDirectory:
+    category: otIcons
+    type: string
+    description: 'LLL:EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf:settings.otIcons.customMappingDirectory.description'
+    default: ''

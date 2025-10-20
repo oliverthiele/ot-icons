@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+	<file source-language="en" datatype="plaintext"
+		  original="EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf"
+		  date="2025-09-22T11:06:00Z" product-name="ot-icons">
+		<header/>
+		<body>
+			<trans-unit id="label" resname="label">
+				<source>Icons</source>
+			</trans-unit>
+			<trans-unit id="categories.otIcons" resname="categories.otIcons">
+				<source>Icons</source>
+			</trans-unit>
+			<trans-unit id="settings.otIcons.defaultIconSet" resname="settings.otIcons.defaultIconSet">
+				<source>Default Icon Set</source>
+			</trans-unit>
+			<trans-unit id="settings.otIcons.iconDirectory" resname="settings.otIcons.iconDirectory">
+				<source>Icon Directory</source>
+			</trans-unit>
+			<trans-unit id="settings.otIcons.defaultIconStyle" resname="settings.otIcons.defaultIconStyle">
+				<source>Default Icon Style</source>
+			</trans-unit>
+			<trans-unit id="settings.otIcons.defaultIconStyle.description" resname="settings.otIcons.defaultIconStyle.description">
+				<source>(e.g. solid, regular, …. The name is used as a subdirectory in the path of "Icon Directory".)</source>
+			</trans-unit>
+			<trans-unit id="settings.otIcons.customMappingDirectory" resname="settings.otIcons.customMappingDirectory">
+				<source>Custom Mapping Directory</source>
+			</trans-unit>
+			<trans-unit id="settings.otIcons.customMappingDirectory.description" resname="settings.otIcons.customMappingDirectory.description">
+				<source>Optional path to a directory containing custom mapping files (e.g. EXT:my_sitepackage/Configuration/Mappings/). The file name must match the value of "Default Icon Set" (e.g. FontAwesome_7.php). When changes are made, clear the TYPO3 cache to reload mappings.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
