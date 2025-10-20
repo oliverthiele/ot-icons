@@ -83,6 +83,8 @@ class IconViewHelper extends AbstractViewHelper
             );
         }
 
+        $ariaHidden = $this->arguments['aria-hidden'] ?? null;
+
         return $this->iconService->getIconString(
             (string)$identifier,
             (string)$this->arguments['size'],
@@ -90,7 +92,7 @@ class IconViewHelper extends AbstractViewHelper
             (string)$this->arguments['returnAs'],
             (string)$this->arguments['id'],
             (string)$this->arguments['additionalClasses'],
-            (bool)$this->arguments['aria-hidden'],
+            $ariaHidden,
             (string)$this->arguments['aria-label'],
             (string)$this->arguments['aria-description'],
             (string)$this->arguments['title'],

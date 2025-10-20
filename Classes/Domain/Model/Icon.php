@@ -10,13 +10,13 @@ final class Icon
 {
     // protected string $identifier; set via constructor
 
-    protected string $size;
+    protected string $size = '';
 
     private string $iconSizeString = '';
 
     private string $iconSizeEm = '';
 
-    protected string $id;
+    protected string $id = '';
 
     protected string $additionalClasses = '';
 
@@ -461,16 +461,20 @@ final class Icon
     }
 
     /**
-     * @param string $iconString
-     * @param string $titleAndDescriptionTags
-     * @return string
+     * Inserts <title> and <desc> tags into an existing SVG markup.
+     *
+     * @param string $iconString The original SVG markup
+     * @param string $titleAndDescriptionTags The combined <title> and <desc> markup
+     * @return string Modified SVG markup, or original if regex fails
      */
     private static function insertTitleAndDescriptionTags(string $iconString, string $titleAndDescriptionTags): string
     {
-        return preg_replace(
-            '/\<svg (.*)\>(.*)<\/svg>/mU',
+        $result = preg_replace(
+            '/<svg\b([^>]*)>(.*?)<\/svg>/ms',
             '<svg ${1}>' . $titleAndDescriptionTags . '${2}</svg>',
             $iconString
         );
+
+        return $result ?? $iconString;
     }
 }

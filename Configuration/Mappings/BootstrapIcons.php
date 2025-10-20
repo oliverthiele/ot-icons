@@ -9,7 +9,7 @@
 return [
     'config' => [
         'prefix' => 'bi-',
-        'version' => 1,
+        'version' => '1',
         'defaultSubdirectory' => '',
     ],
     // Fallback for unsupported icons

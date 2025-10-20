@@ -9,7 +9,7 @@
 return [
     'config' => [
         'prefix' => 'fa-',
-        'version' => 7,
+        'version' => '7',
         'defaultSubdirectory' => 'solid/',
     ],
     // Fallback for unsupported icons

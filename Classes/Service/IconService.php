@@ -40,7 +40,10 @@ class IconService
 {
     private FrontendInterface $cache;
 
+    /** @var array<string, mixed> */
     private array $settings = [];
+
+    /** @var array<string, string> */
     private array $iconCache = []; // Request-internal cache
 
     public function __construct(CacheManager $cacheManager)
@@ -108,8 +111,8 @@ class IconService
         // --- Load mapping early so version can be included in cache key ---
         $mapping = $this->loadMappingFile($this->settings['defaultIconSet']);
 
-        $this->settings['defaultSubdirectory'] = $mapping['defaultSubdirectory'] ?? '';
-        $mappingVersion = $mapping['version'] ?? '0';
+        $this->settings['defaultSubdirectory'] = $mapping['defaultSubdirectory'];
+        $mappingVersion = (string)($mapping['version']);
 
         // --- Build cache key (includes mapping version and icon set) ---
         $cacheKey = md5(implode('|', [
