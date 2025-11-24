@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This mapping is incomplete. For further mappings, please create a pull request.
  *

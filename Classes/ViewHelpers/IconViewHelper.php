@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OliverThiele\OtIcons\ViewHelpers;
-
 /**
  * Copyright notice
+ *
  * (c) 2025 Oliver Thiele <mail@oliver-thiele.de>, Web Development Oliver Thiele
  * All rights reserved
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,6 +21,8 @@ namespace OliverThiele\OtIcons\ViewHelpers;
  * This copyright notice MUST APPEAR in all copies of the script!
  */
 
+namespace OliverThiele\OtIcons\ViewHelpers;
+
 use OliverThiele\OtIcons\Service\IconService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
@@ -34,7 +35,8 @@ class IconViewHelper extends AbstractViewHelper
 {
     public function __construct(
         private readonly IconService $iconService
-    ) {}
+    ) {
+    }
 
     protected $escapeOutput = false;
 
