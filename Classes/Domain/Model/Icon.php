@@ -2,6 +2,25 @@
 
 declare(strict_types=1);
 
+/**
+ * Copyright notice
+ *
+ * (c) 2025 Oliver Thiele <mail@oliver-thiele.de>, Web Development Oliver Thiele
+ * All rights reserved
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * This copyright notice MUST APPEAR in all copies of the script!
+ */
+
 namespace OliverThiele\OtIcons\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,7 +40,7 @@ final class Icon
     protected string $additionalClasses = '';
 
     /**
-     * @var string $iconStyle The style of the icon, e.g. "solid", "regular", "light", "duotone", "thin", "fill", "brands"
+     * @var string $iconStyle The style of the icon, e.g. "solid","regular","light","duotone","thin","fill","brands"
      */
     protected string $iconStyle = '';
 
@@ -339,10 +358,10 @@ final class Icon
             // optional browser tooltip (not announced by SR due to aria-hidden)
             if ($this->getTitle() !== '') {
                 $titleAndDescriptionTags = '<title>' . htmlspecialchars(
-                        $this->getTitle(),
-                        ENT_QUOTES | ENT_SUBSTITUTE,
-                        'UTF-8'
-                    ) . '</title>';
+                    $this->getTitle(),
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ) . '</title>';
             }
         } else {
             // accessible icon
@@ -353,29 +372,29 @@ final class Icon
             if ($labelText !== '') {
                 $titleId = $id . '-title';
                 $titleTag = '<title id="' . $titleId . '">' . htmlspecialchars(
-                        $labelText,
-                        ENT_QUOTES | ENT_SUBSTITUTE,
-                        'UTF-8'
-                    ) . '</title>';
+                    $labelText,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ) . '</title>';
                 $ariaLabelledBy = ' aria-labelledby="' . $titleId . '"';
             } elseif ($this->getTitle() !== '') {
                 // fall back: if no aria-label was provided, use "title" as accessible name
                 $titleId = $id . '-title';
                 $titleTag = '<title id="' . $titleId . '">' . htmlspecialchars(
-                        (string)$this->getTitle(),
-                        ENT_QUOTES | ENT_SUBSTITUTE,
-                        'UTF-8'
-                    ) . '</title>';
+                    (string)$this->getTitle(),
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ) . '</title>';
                 $ariaLabelledBy = ' aria-labelledby="' . $titleId . '"';
             }
 
             if ($descText !== '') {
                 $descriptionId = $id . '-desc';
                 $descriptionTag = '<desc id="' . $descriptionId . '">' . htmlspecialchars(
-                        $descText,
-                        ENT_QUOTES | ENT_SUBSTITUTE,
-                        'UTF-8'
-                    ) . '</desc>';
+                    $descText,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ) . '</desc>';
                 $ariaDescribedBy = ' aria-describedby="' . $descriptionId . '"';
             }
 
@@ -383,7 +402,8 @@ final class Icon
             // if ($titleId === '' && $labelText !== '') {
             //     // In most cases we already handled this via <title> + labelledby,
             //     // but if you prefer aria-label over <title>, you could swap logic here.
-            //     // $ariaLabelAndDescription = ' aria-label="' . htmlspecialchars($labelText, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"';
+            //     // $ariaLabelAndDescription = ' aria-label="' .
+            //     // htmlspecialchars($labelText, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"';
             // }
 
             // Combine all non-empty parts cleanly
@@ -424,7 +444,7 @@ final class Icon
     public function getSpriteCode(): string
     {
         return '<svg class="' . $this->getCssClass(
-            ) . '"><use href="#' . $this->identifier . '" xlink:href="#' . $this->identifier . '"></use></svg>';
+        ) . '"><use href="#' . $this->identifier . '" xlink:href="#' . $this->identifier . '"></use></svg>';
     }
 
     private function loadIconFromDirectory(): string
@@ -439,7 +459,7 @@ final class Icon
 
         $iconPath = $directory . $this->getIdentifier() . '.svg';
 
-        // 1️⃣ Primary path: current style (solid, regular, etc.)
+        // Primary path: current style (solid, regular, etc.)
         if (is_file($iconPath)) {
             $img = @file_get_contents($iconPath);
             if ($img !== false) {
@@ -447,7 +467,7 @@ final class Icon
             }
         }
 
-        // 2️⃣ Fallback: Brands directory at base level (not within "regular/")
+        // Fallback: Brands directory at base level (not within "regular/")
         $brandPath = rtrim($basePath, '/') . '/brands/' . $this->getIdentifier() . '.svg';
         if (str_starts_with($brandPath, 'EXT:')) {
             $brandPath = GeneralUtility::getFileAbsFileName($brandPath);
@@ -460,14 +480,17 @@ final class Icon
         }
 
         // SVG not found
-        return '<svg class="ot-inline-icon ot-2x" xmlns="http://www.w3.org/2000/svg" style="fill: red;" viewBox="0 0 576 512">
+        // phpcs:disable Generic.Files.LineLength.TooLong
+        return '<svg class="ot-inline-icon ot-2x" xmlns="http://www.w3.org/2000/svg"
+                     style="fill: red;" viewBox="0 0 576 512" aria-hidden="true" focusable="false">
                 <title>SVG with Identifier ' . $this->getIdentifier() . ' not found in path: ' . $iconPath . '</title>
                 <path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"/>
             </svg>';
+        // phpcs:enable Generic.Files.LineLength.TooLong
     }
 
     /**
-     * Inserts <title> and <desc> tags into an existing SVG markup.
+     * Inserts `<title>` and `<desc>` tags into an existing SVG markup.
      *
      * @param string $iconString The original SVG markup
      * @param string $titleAndDescriptionTags The combined <title> and <desc> markup

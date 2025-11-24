@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace OliverThiele\OtIcons\Service;
-
 /**
  * Copyright notice
+ *
  * (c) 2025 Oliver Thiele <mail@oliver-thiele.de>, Web Development Oliver Thiele
  * All rights reserved
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,6 +20,8 @@ namespace OliverThiele\OtIcons\Service;
  * GNU General Public License for more details.
  * This copyright notice MUST APPEAR in all copies of the script!
  */
+
+namespace OliverThiele\OtIcons\Service;
 
 use OliverThiele\OtIcons\Domain\Model\Icon;
 use Psr\Http\Message\ServerRequestInterface;
@@ -291,7 +292,6 @@ class IconService
         return $normalized;
     }
 
-
     /**
      * Load a mapping file for a given icon set.
      *
@@ -301,7 +301,6 @@ class IconService
      *      map: array<string,string>
      *  } The normalized mapping configuration, or an empty structure on error
      */
-
     private function loadMappingFile(string $iconSet): array
     {
         $logger = $this->logger;
@@ -358,5 +357,4 @@ class IconService
             'map' => is_array($data['map'] ?? null) ? $data['map'] : [],
         ];
     }
-
 }
