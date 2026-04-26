@@ -1,7 +1,7 @@
 {
 	"name": "oliverthiele/ot-icons",
 	"type": "typo3-cms-extension",
-	"description": "ViewHelper for rendering icons in your FluidTemplates. The output can be changed from one icon set to another at a later date.",
+	"description": "Icon ViewHelper - ViewHelper for rendering icons in your FluidTemplates. The output can be changed from one icon set to another at a later date.",
 	"homepage": "https://www.oliver-thiele.de",
 	"license": [
 		"GPL-2.0-or-later"
@@ -15,8 +15,8 @@
 		}
 	],
 	"require": {
-		"php": "^8.2",
-		"typo3/cms-core": "^13.4"
+		"php": ">=8.3",
+		"typo3/cms-core": "^13.4||^14.3"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest"
@@ -29,6 +29,9 @@
 		}
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-main": "2.x-dev"
+		},
 		"typo3/cms": {
 			"extension-key": "ot_icons"
 		}
