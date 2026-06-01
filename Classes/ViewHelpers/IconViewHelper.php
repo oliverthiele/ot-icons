@@ -33,12 +33,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class IconViewHelper extends AbstractViewHelper
 {
+    protected $escapeOutput = false;
     public function __construct(
         private readonly IconService $iconService
     ) {
     }
-
-    protected $escapeOutput = false;
 
     /**
      * Initialize arguments.

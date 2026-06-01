@@ -27,35 +27,34 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class Icon
 {
+    private const ALLOWED_ROLES = ['img', 'presentation', 'none', 'button', 'link', 'graphics-symbol'];
     // protected string $identifier; set via constructor
 
-    protected string $size = '';
+    private string $size = '';
 
     private string $iconSizeString = '';
 
     private string $iconSizeEm = '';
 
-    protected string $id = '';
+    private string $id = '';
 
-    protected string $additionalClasses = '';
+    private string $additionalClasses = '';
 
     /**
      * @var string $iconStyle The style of the icon, e.g. "solid","regular","light","duotone","thin","fill","brands"
      */
-    protected string $iconStyle = '';
+    private string $iconStyle = '';
 
     private string $subdirectory = '';
 
-    protected ?bool $ariaHidden = null;
+    private ?bool $ariaHidden = null;
 
-    protected string $ariaLabel = '';
-    protected string $ariaDescription = '';
+    private string $ariaLabel = '';
+    private string $ariaDescription = '';
 
-    protected ?string $role = null;
+    private ?string $role = null;
 
-    protected string $title = '';
-
-    private const ALLOWED_ROLES = ['img', 'presentation', 'none', 'button', 'link', 'graphics-symbol'];
+    private string $title = '';
 
     private string $defaultSubdirectory = '';
 
@@ -408,10 +407,10 @@ final class Icon
 
             // Combine all non-empty parts cleanly
             $addToSvgTag = trim(
-                $this->getRoleAttribute() . // only add role="..." if necessary
-                $ariaLabelledBy .
-                $ariaDescribedBy .
-                $ariaLabelAndDescription
+                $this->getRoleAttribute() // only add role="..." if necessary
+                . $ariaLabelledBy
+                . $ariaDescribedBy
+                . $ariaLabelAndDescription
             );
             if ($addToSvgTag !== '') {
                 $addToSvgTag = ' ' . $addToSvgTag;
@@ -422,8 +421,8 @@ final class Icon
 
         $iconString = str_replace(
             '<svg ',
-            '<svg' . $this->getIdStringForSvg() . $addToSvgTag . ' class="ot-inline-icon ot-icon-id-' .
-            $this->getIdentifier() . $this->getIconSizeString() . $this->getAdditionalClasses() . '" ',
+            '<svg' . $this->getIdStringForSvg() . $addToSvgTag . ' class="ot-inline-icon ot-icon-id-'
+            . $this->getIdentifier() . $this->getIconSizeString() . $this->getAdditionalClasses() . '" ',
             $svg
         );
         return self::insertTitleAndDescriptionTags($iconString, $titleAndDescriptionTags);
