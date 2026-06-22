@@ -29,6 +29,14 @@
 				<source>e.g. solid, regular, …. The name is used as a subdirectory in the path of "Icon Directory".</source>
 				<target>z. B. solid, regular, …. Der Name wird als Unterverzeichnis im Pfad von „Icon Verzeichnis“ verwendet.</target>
 			</trans-unit>
+			<trans-unit id="settings.otIcons.availableIconStyles" resname="settings.otIcons.availableIconStyles" approved="yes">
+				<source>Available Icon Styles</source>
+				<target>Verfügbare Icon-Stile</target>
+			</trans-unit>
+			<trans-unit id="settings.description.otIcons.availableIconStyles" resname="settings.description.otIcons.availableIconStyles" approved="yes">
+				<source>Comma-separated list of icon styles available for per-element selection (e.g. "solid,light,regular"). Leave empty to disable per-element style selection.</source>
+				<target>Kommaseparierte Liste der Icon-Stile für die Auswahl pro Inhaltselement (z. B. "solid,light,regular"). Leer lassen, um die Stilauswahl pro Element zu deaktivieren.</target>
+			</trans-unit>
 			<trans-unit id="settings.otIcons.customMappingDirectory" resname="settings.otIcons.customMappingDirectory" approved="yes">
 				<source>Custom Mapping Directory</source>
 				<target>Benutzerdefiniertes Verzeichnis für die Identifier-Zuordnungen</target>

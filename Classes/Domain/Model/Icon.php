@@ -58,6 +58,9 @@ final class Icon
 
     private string $defaultSubdirectory = '';
 
+    /** @var array<string, string> */
+    private array $styleDirectories = [];
+
     /**
      * @param string $identifier
      * @param array<string, mixed> $settings
@@ -67,6 +70,9 @@ final class Icon
         private readonly array $settings
     ) {
         $this->defaultSubdirectory = $settings['defaultSubdirectory'] ?? '';
+        $this->styleDirectories = is_array($settings['styleDirectories'] ?? null)
+            ? $settings['styleDirectories']
+            : [];
     }
 
     public function getIdentifier(): string
@@ -204,25 +210,31 @@ final class Icon
 
     public function setIconStyle(string $iconStyle): void
     {
-        // Alias for ViewHelpers
-        $subDirectory = match ($iconStyle) {
-            'l' => 'light/',
-            'r' => 'regular/',
-            't' => 'thin/',
-            'b' => 'brands/',
-            'd' => 'duotone/',
-            's-l' => 'sharp-light/',
-            's-r' => 'sharp-regular/',
-            's-s' => 'sharp-solid/',
-            's-t' => 'sharp-thin/',
-            default => '',
-        };
+        $subDirectory = '';
 
-        // If no style is set, use default from the mapping file.
+        if ($iconStyle !== '' && isset($this->styleDirectories[$iconStyle])) {
+            $subDirectory = $this->styleDirectories[$iconStyle];
+        }
+
+        // Short aliases for ViewHelper usage
+        if ($subDirectory === '') {
+            $subDirectory = match ($iconStyle) {
+                'l' => 'light/',
+                'r' => 'regular/',
+                't' => 'thin/',
+                'b' => 'brands/',
+                'd' => 'duotone/',
+                's-l' => 'sharp-light/',
+                's-r' => 'sharp-regular/',
+                's-s' => 'sharp-solid/',
+                's-t' => 'sharp-thin/',
+                default => '',
+            };
+        }
+
         if ($subDirectory === '' && $iconStyle === '' && $this->defaultSubdirectory !== '') {
             $subDirectory = $this->defaultSubdirectory;
         }
-        // if the user writes their own style but does not use an alias
         if ($subDirectory === '' && $iconStyle !== '') {
             $subDirectory = $iconStyle . '/';
         }
