@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.1.0] — 2026-06-23
+
+### Added
+
+- SiteSet setting `otIcons.availableIconStyles` for per-element icon style selection
+- `styleDirectories` key in mapping files for configurable style-to-directory mapping
+- `IconStyleItemsProcFunc` for TCA select item generation from SiteSet settings
+- `IconStyleDisplayCondition` UserFunc for conditional field visibility
+
+### Changed
+
+- Icon model resolves directories via `styleDirectories` mapping before short-alias fallback
+- IconService passes `styleDirectories` from mapping data to Icon model
+- Custom mapping files can now override `styleDirectories` in addition to `config` and `map`
+
+---
+
 ## [2.0.0] — 2026-04-26
 
 ### Added
@@ -38,7 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Accessible SVG output (`aria-hidden`, `aria-label`, `role`)
 - Per-site configuration via SiteSet settings
 
-[Unreleased]: https://github.com/oliverthiele/ot-icons/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/oliverthiele/ot-icons/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/oliverthiele/ot-icons/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/oliverthiele/ot-icons/compare/v1.0.1...v2.0.0
 [1.0.1]: https://github.com/oliverthiele/ot-icons/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/oliverthiele/ot-icons/releases/tag/v1.0.0
