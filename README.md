@@ -1,9 +1,9 @@
 # OT Icons — Accessible SVG Icon ViewHelper for TYPO3
 
-ViewHelper for rendering accessible inline SVG icons in Fluid templates for TYPO3 v13 and v14.
+ViewHelper for rendering accessible inline SVG icons in Fluid templates for TYPO3 v14.
 Icons are resolved via mapping files — switch icon sets without touching templates.
 
-[![TYPO3](https://img.shields.io/badge/TYPO3-13.4%20%7C%2014.3-orange.svg)](https://typo3.org/)
+[![TYPO3](https://img.shields.io/badge/TYPO3-14.3-orange.svg)](https://typo3.org/)
 [![Packagist Version](https://img.shields.io/packagist/v/oliverthiele/ot-icons.svg)](https://packagist.org/packages/oliverthiele/ot-icons)
 [![PHP](https://img.shields.io/packagist/dependency-v/oliverthiele/ot-icons/php.svg)](https://php.net/)
 [![License](https://img.shields.io/packagist/l/oliverthiele/ot-icons.svg)](LICENSE)
@@ -29,8 +29,8 @@ Icons are resolved via mapping files — switch icon sets without touching templ
 
 | Requirement  | Version          |
 |--------------|------------------|
-| TYPO3        | `^13.4 \| ^14.3` |
-| PHP          | `>=8.3`          |
+| TYPO3        | `^14.3`          |
+| PHP          | `>=8.4`          |
 
 ---
 

@@ -15,8 +15,8 @@
 		}
 	],
 	"require": {
-		"php": ">=8.3",
-		"typo3/cms-core": "^13.4||^14.3"
+		"php": ">=8.4",
+		"typo3/cms-core": "^14.3"
 	},
 	"require-dev": {
 		"roave/security-advisories": "dev-latest"
@@ -30,7 +30,8 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "2.x-dev"
+			"dev-main": "3.x-dev",
+			"dev-develop": "3.x-dev"
 		},
 		"typo3/cms": {
 			"extension-key": "ot_icons"

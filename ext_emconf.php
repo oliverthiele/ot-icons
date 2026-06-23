@@ -8,11 +8,11 @@ $EM_CONF['ot_icons'] = [
     'author_email' => 'mail@oliver-thiele.de',
     'author_company' => 'Web Development Oliver Thiele',
     'state' => 'stable',
-    'version' => '2.1.0',
+    'version' => '3.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.0-14.99.99',
-            'php' => '8.3.0-8.99.99',
+            'typo3' => '14.3.0-14.99.99',
+            'php' => '8.4.0-8.99.99',
         ],
         'conflicts' => [],
         'suggests' => [],
