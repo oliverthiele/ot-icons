@@ -14,6 +14,7 @@ return [
         'version' => '1',
         'defaultSubdirectory' => '',
     ],
+    'styleDirectories' => [],
     // Fallback for unsupported icons
     'map' => [
         // your internal identifier => external library identifier

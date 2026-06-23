@@ -117,6 +117,7 @@ class IconService
         $mapping = $this->getMappingData($this->settings['defaultIconSet']);
 
         $this->settings['defaultSubdirectory'] = $mapping['defaultSubdirectory'];
+        $this->settings['styleDirectories'] = $mapping['styleDirectories'];
         $mappingVersion = (string)($mapping['version']);
 
         // --- Build cache key including mapping version for safety ---
@@ -200,12 +201,9 @@ class IconService
      *      prefix: string,
      *      version: string,
      *      defaultSubdirectory: string,
+     *      styleDirectories: array<string, string>,
      *      map: array<string, string>
-     *  } Structured mapping configuration with keys:
-     *  - prefix (string)
-     *  - version (string|int|null)
-     *  - defaultSubdirectory (string)
-     *  - map (array)
+     *  }
      */
     private function getMappingData(string $iconSet): array
     {
@@ -256,6 +254,12 @@ class IconService
                     if (isset($customData['config'])) {
                         $data['config'] = array_merge($data['config'], $customData['config']);
                     }
+                    if (isset($customData['styleDirectories'])) {
+                        $data['styleDirectories'] = array_merge(
+                            $data['styleDirectories'],
+                            $customData['styleDirectories']
+                        );
+                    }
                     if (isset($customData['map'])) {
                         $data['map'] = array_merge($data['map'], $customData['map']);
                     }
@@ -283,6 +287,7 @@ class IconService
             'prefix' => $data['config']['prefix'] ?? '',
             'version' => (string)($data['config']['version'] ?? ''),
             'defaultSubdirectory' => $data['config']['defaultSubdirectory'] ?? '',
+            'styleDirectories' => $data['styleDirectories'],
             'map' => $data['map'],
         ];
 
@@ -298,6 +303,7 @@ class IconService
      * @param string $iconSet The name of the icon set (e.g. "FontAwesome_7")
      * @return array{
      *      config: array{prefix: string, version: string, defaultSubdirectory: string},
+     *      styleDirectories: array<string, string>,
      *      map: array<string,string>
      *  } The normalized mapping configuration, or an empty structure on error
      */
@@ -314,6 +320,7 @@ class IconService
                 'version' => '',
                 'defaultSubdirectory' => '',
             ],
+            'styleDirectories' => [],
             'map' => [],
         ];
 
@@ -354,6 +361,9 @@ class IconService
                 'version' => (string)($data['config']['version'] ?? ''),
                 'defaultSubdirectory' => (string)($data['config']['defaultSubdirectory'] ?? ''),
             ],
+            'styleDirectories' => is_array($data['styleDirectories'] ?? null)
+                ? $data['styleDirectories']
+                : [],
             'map' => is_array($data['map'] ?? null) ? $data['map'] : [],
         ];
     }

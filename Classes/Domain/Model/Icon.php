@@ -27,37 +27,39 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class Icon
 {
+    private const ALLOWED_ROLES = ['img', 'presentation', 'none', 'button', 'link', 'graphics-symbol'];
     // protected string $identifier; set via constructor
 
-    protected string $size = '';
+    private string $size = '';
 
     private string $iconSizeString = '';
 
     private string $iconSizeEm = '';
 
-    protected string $id = '';
+    private string $id = '';
 
-    protected string $additionalClasses = '';
+    private string $additionalClasses = '';
 
     /**
      * @var string $iconStyle The style of the icon, e.g. "solid","regular","light","duotone","thin","fill","brands"
      */
-    protected string $iconStyle = '';
+    private string $iconStyle = '';
 
     private string $subdirectory = '';
 
-    protected ?bool $ariaHidden = null;
+    private ?bool $ariaHidden = null;
 
-    protected string $ariaLabel = '';
-    protected string $ariaDescription = '';
+    private string $ariaLabel = '';
+    private string $ariaDescription = '';
 
-    protected ?string $role = null;
+    private ?string $role = null;
 
-    protected string $title = '';
-
-    private const ALLOWED_ROLES = ['img', 'presentation', 'none', 'button', 'link', 'graphics-symbol'];
+    private string $title = '';
 
     private string $defaultSubdirectory = '';
+
+    /** @var array<string, string> */
+    private array $styleDirectories = [];
 
     /**
      * @param string $identifier
@@ -68,6 +70,9 @@ final class Icon
         private readonly array $settings
     ) {
         $this->defaultSubdirectory = $settings['defaultSubdirectory'] ?? '';
+        $this->styleDirectories = is_array($settings['styleDirectories'] ?? null)
+            ? $settings['styleDirectories']
+            : [];
     }
 
     public function getIdentifier(): string
@@ -205,25 +210,31 @@ final class Icon
 
     public function setIconStyle(string $iconStyle): void
     {
-        // Alias for ViewHelpers
-        $subDirectory = match ($iconStyle) {
-            'l' => 'light/',
-            'r' => 'regular/',
-            't' => 'thin/',
-            'b' => 'brands/',
-            'd' => 'duotone/',
-            's-l' => 'sharp-light/',
-            's-r' => 'sharp-regular/',
-            's-s' => 'sharp-solid/',
-            's-t' => 'sharp-thin/',
-            default => '',
-        };
+        $subDirectory = '';
 
-        // If no style is set, use default from the mapping file.
+        if ($iconStyle !== '' && isset($this->styleDirectories[$iconStyle])) {
+            $subDirectory = $this->styleDirectories[$iconStyle];
+        }
+
+        // Short aliases for ViewHelper usage
+        if ($subDirectory === '') {
+            $subDirectory = match ($iconStyle) {
+                'l' => 'light/',
+                'r' => 'regular/',
+                't' => 'thin/',
+                'b' => 'brands/',
+                'd' => 'duotone/',
+                's-l' => 'sharp-light/',
+                's-r' => 'sharp-regular/',
+                's-s' => 'sharp-solid/',
+                's-t' => 'sharp-thin/',
+                default => '',
+            };
+        }
+
         if ($subDirectory === '' && $iconStyle === '' && $this->defaultSubdirectory !== '') {
             $subDirectory = $this->defaultSubdirectory;
         }
-        // if the user writes their own style but does not use an alias
         if ($subDirectory === '' && $iconStyle !== '') {
             $subDirectory = $iconStyle . '/';
         }
@@ -408,10 +419,10 @@ final class Icon
 
             // Combine all non-empty parts cleanly
             $addToSvgTag = trim(
-                $this->getRoleAttribute() . // only add role="..." if necessary
-                $ariaLabelledBy .
-                $ariaDescribedBy .
-                $ariaLabelAndDescription
+                $this->getRoleAttribute() // only add role="..." if necessary
+                . $ariaLabelledBy
+                . $ariaDescribedBy
+                . $ariaLabelAndDescription
             );
             if ($addToSvgTag !== '') {
                 $addToSvgTag = ' ' . $addToSvgTag;
@@ -422,8 +433,8 @@ final class Icon
 
         $iconString = str_replace(
             '<svg ',
-            '<svg' . $this->getIdStringForSvg() . $addToSvgTag . ' class="ot-inline-icon ot-icon-id-' .
-            $this->getIdentifier() . $this->getIconSizeString() . $this->getAdditionalClasses() . '" ',
+            '<svg' . $this->getIdStringForSvg() . $addToSvgTag . ' class="ot-inline-icon ot-icon-id-'
+            . $this->getIdentifier() . $this->getIconSizeString() . $this->getAdditionalClasses() . '" ',
             $svg
         );
         return self::insertTitleAndDescriptionTags($iconString, $titleAndDescriptionTags);

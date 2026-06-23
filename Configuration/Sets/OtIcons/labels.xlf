@@ -23,6 +23,12 @@
 			<trans-unit id="settings.otIcons.defaultIconStyle.description" resname="settings.otIcons.defaultIconStyle.description">
 				<source>(e.g. solid, regular, …. The name is used as a subdirectory in the path of "Icon Directory".)</source>
 			</trans-unit>
+			<trans-unit id="settings.otIcons.availableIconStyles" resname="settings.otIcons.availableIconStyles">
+				<source>Available Icon Styles</source>
+			</trans-unit>
+			<trans-unit id="settings.description.otIcons.availableIconStyles" resname="settings.description.otIcons.availableIconStyles">
+				<source>Comma-separated list of icon styles available for per-element selection (e.g. "solid,light,regular"). Leave empty to disable per-element style selection.</source>
+			</trans-unit>
 			<trans-unit id="settings.otIcons.customMappingDirectory" resname="settings.otIcons.customMappingDirectory">
 				<source>Custom Mapping Directory</source>
 			</trans-unit>

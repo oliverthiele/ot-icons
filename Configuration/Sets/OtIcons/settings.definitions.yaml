@@ -18,6 +18,11 @@ settings:
     description: 'LLL:EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf:settings.otIcons.defaultIconStyle.description'
     default: 'solid'
 
+  otIcons.availableIconStyles:
+    category: otIcons
+    type: string
+    default: ''
+
   otIcons.customMappingDirectory:
     category: otIcons
     type: string
