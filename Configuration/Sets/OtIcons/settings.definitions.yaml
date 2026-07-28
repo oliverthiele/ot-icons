@@ -15,7 +15,6 @@ settings:
   otIcons.defaultIconStyle:
     category: otIcons
     type: string
-    description: 'LLL:EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf:settings.otIcons.defaultIconStyle.description'
     default: 'solid'
 
   otIcons.availableIconStyles:
@@ -26,5 +25,4 @@ settings:
   otIcons.customMappingDirectory:
     category: otIcons
     type: string
-    description: 'LLL:EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf:settings.otIcons.customMappingDirectory.description'
     default: ''

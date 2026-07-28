@@ -1,40 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-	<file source-language="en" datatype="plaintext"
-		  original="EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf"
-		  date="2025-09-22T11:06:00Z" product-name="ot-icons">
-		<header/>
-		<body>
-			<trans-unit id="label" resname="label">
-				<source>Icons</source>
-			</trans-unit>
-			<trans-unit id="categories.otIcons" resname="categories.otIcons">
-				<source>Icons</source>
-			</trans-unit>
-			<trans-unit id="settings.otIcons.defaultIconSet" resname="settings.otIcons.defaultIconSet">
-				<source>Default Icon Set</source>
-			</trans-unit>
-			<trans-unit id="settings.otIcons.iconDirectory" resname="settings.otIcons.iconDirectory">
-				<source>Icon Directory</source>
-			</trans-unit>
-			<trans-unit id="settings.otIcons.defaultIconStyle" resname="settings.otIcons.defaultIconStyle">
-				<source>Default Icon Style</source>
-			</trans-unit>
-			<trans-unit id="settings.otIcons.defaultIconStyle.description" resname="settings.otIcons.defaultIconStyle.description">
-				<source>(e.g. solid, regular, …. The name is used as a subdirectory in the path of "Icon Directory".)</source>
-			</trans-unit>
-			<trans-unit id="settings.otIcons.availableIconStyles" resname="settings.otIcons.availableIconStyles">
-				<source>Available Icon Styles</source>
-			</trans-unit>
-			<trans-unit id="settings.description.otIcons.availableIconStyles" resname="settings.description.otIcons.availableIconStyles">
-				<source>Comma-separated list of icon styles available for per-element selection (e.g. "solid,light,regular"). Leave empty to disable per-element style selection.</source>
-			</trans-unit>
-			<trans-unit id="settings.otIcons.customMappingDirectory" resname="settings.otIcons.customMappingDirectory">
-				<source>Custom Mapping Directory</source>
-			</trans-unit>
-			<trans-unit id="settings.otIcons.customMappingDirectory.description" resname="settings.otIcons.customMappingDirectory.description">
-				<source>Optional path to a directory containing custom mapping files (e.g. EXT:my_sitepackage/Configuration/Mappings/). The file name must match the value of "Default Icon Set" (e.g. FontAwesome_7.php). When changes are made, clear the TYPO3 cache to reload mappings.</source>
-			</trans-unit>
-		</body>
-	</file>
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
+  <file id="ot-icons-labels"
+        original="EXT:ot_icons/Configuration/Sets/OtIcons/labels.xlf">
+    <unit id="label">
+      <segment>
+        <source>Icons</source>
+      </segment>
+    </unit>
+    <unit id="categories.otIcons">
+      <segment>
+        <source>Icons</source>
+      </segment>
+    </unit>
+    <unit id="settings.otIcons.defaultIconSet">
+      <segment>
+        <source>Default Icon Set</source>
+      </segment>
+    </unit>
+    <unit id="settings.otIcons.iconDirectory">
+      <segment>
+        <source>Icon Directory</source>
+      </segment>
+    </unit>
+    <unit id="settings.otIcons.defaultIconStyle">
+      <segment>
+        <source>Default Icon Style</source>
+      </segment>
+    </unit>
+    <unit id="settings.description.otIcons.defaultIconStyle">
+      <segment>
+        <source>(e.g. solid, regular, …. The name is used as a subdirectory in the path of "Icon Directory".)</source>
+      </segment>
+    </unit>
+    <unit id="settings.otIcons.availableIconStyles">
+      <segment>
+        <source>Available Icon Styles</source>
+      </segment>
+    </unit>
+    <unit id="settings.description.otIcons.availableIconStyles">
+      <segment>
+        <source>Comma-separated list of icon styles available for per-element selection (e.g. "solid,light,regular"). Leave empty to disable per-element style selection.</source>
+      </segment>
+    </unit>
+    <unit id="settings.otIcons.customMappingDirectory">
+      <segment>
+        <source>Custom Mapping Directory</source>
+      </segment>
+    </unit>
+    <unit id="settings.description.otIcons.customMappingDirectory">
+      <segment>
+        <source>Optional path to a directory containing custom mapping files (e.g. EXT:my_sitepackage/Configuration/Mappings/). The file name must match the value of "Default Icon Set" (e.g. FontAwesome_7.php). When changes are made, clear the TYPO3 cache to reload mappings.</source>
+      </segment>
+    </unit>
+  </file>
 </xliff>
