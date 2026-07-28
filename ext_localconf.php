@@ -13,5 +13,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$cacheName]
     'frontend' => VariableFrontend::class,
     'backend' => FileBackend::class,
 ];
-
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['i'][] = 'OliverThiele\OtIcons\ViewHelpers';
