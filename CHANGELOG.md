@@ -7,13 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased] — 3.0.0
+## [3.0.0] — 2026-07-28
 
 ### Changed
 
 - Drop TYPO3 v13 support, require TYPO3 `^14.3`
 - Raise PHP minimum to `>=8.4`
 - Migrate Fluid namespace registration from `ext_localconf.php` to `Configuration/Fluid/Namespaces.php`
+- Migrate the site set labels from XLIFF 1.2 to XLIFF 2.0
+
+### Fixed
+
+- Two setting descriptions used the key pattern `settings.{key}.description`,
+  which the automatic key resolution of site set labels does not find, and
+  therefore required an explicit `LLL:` reference in
+  `settings.definitions.yaml`. They now follow `settings.description.{key}`
+  like the remaining settings, and both explicit references are gone
 
 ---
 
@@ -65,7 +74,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Accessible SVG output (`aria-hidden`, `aria-label`, `role`)
 - Per-site configuration via SiteSet settings
 
-[Unreleased]: https://github.com/oliverthiele/ot-icons/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/oliverthiele/ot-icons/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/oliverthiele/ot-icons/compare/v2.1.0...v3.0.0
 [2.1.0]: https://github.com/oliverthiele/ot-icons/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/oliverthiele/ot-icons/compare/v1.0.1...v2.0.0
 [1.0.1]: https://github.com/oliverthiele/ot-icons/compare/v1.0.0...v1.0.1
