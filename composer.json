@@ -34,7 +34,11 @@
 			"dev-develop": "3.x-dev"
 		},
 		"typo3/cms": {
-			"extension-key": "ot_icons"
+			"extension-key": "ot_icons",
+			"version": "3.0.0",
+			"Package": {
+				"providesPackages": {}
+			}
 		}
 	}
 }
